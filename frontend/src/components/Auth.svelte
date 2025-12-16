@@ -184,7 +184,8 @@
     font-size: 15px;
     box-sizing: border-box;
     transition: all 0.2s ease;
-    background: #fafbfc;
+    background: white;
+    color: #1a202c;
   }
 
   input:focus, select:focus {

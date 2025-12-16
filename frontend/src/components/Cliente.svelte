@@ -646,22 +646,27 @@
 
   .form-group input, .form-group textarea {
     width: 100%;
-    padding: 12px;
-    border: 1px solid #ddd;
+    padding: 12px 14px;
+    border: 1px solid #e2e8f0;
     border-radius: 8px;
     font-size: 14px;
+    color: #1a202c;
+    background: white;
     box-sizing: border-box;
     font-family: inherit;
+    transition: all 0.2s;
   }
 
   .form-group textarea {
     resize: vertical;
     min-height: 80px;
+    line-height: 1.5;
   }
 
   .form-group input:focus, .form-group textarea:focus {
     outline: none;
-    border-color: #667eea;
+    border-color: #4299e1;
+    box-shadow: 0 0 0 3px rgba(66, 153, 225, 0.1);
   }
 
   .total {

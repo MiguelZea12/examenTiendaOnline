@@ -759,11 +759,11 @@
   .form-group input, .form-group textarea {
     width: 100%;
     padding: 12px 14px;
-    border: 1px solid #e9ecef;
+    border: 1px solid #e2e8f0;
     border-radius: 8px;
     font-size: 14px;
     color: #1a202c;
-    background: #f8f9fa;
+    background: white;
     transition: all 0.2s;
     font-family: inherit;
     box-sizing: border-box;
