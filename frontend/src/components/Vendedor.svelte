@@ -50,9 +50,12 @@
   async function loadPedidos() {
     try {
       const pedidosData = await api.getPedidosVendedor();
+      console.log('Pedidos recibidos:', pedidosData);
       // Ordenar por fecha en el cliente
       pedidos = pedidosData.sort((a, b) => new Date(b.fechaPedido) - new Date(a.fechaPedido));
+      console.log('Pedidos ordenados:', pedidos);
     } catch (error) {
+      console.error('Error cargando pedidos:', error);
       alert('Error al cargar pedidos: ' + error.message);
     }
   }
@@ -625,6 +628,90 @@
     background: #d1fae5;
     color: #065f46;
     border: 1px solid #a7f3d0;
+  }
+
+  .pedido-details {
+    margin: 16px 0;
+    padding: 16px;
+    background: #f8f9fa;
+    border-radius: 8px;
+    border: 1px solid #e9ecef;
+  }
+
+  .pedido-details p {
+    margin: 8px 0;
+    font-size: 14px;
+    color: #4a5568;
+    line-height: 1.6;
+  }
+
+  .pedido-details p strong {
+    color: #1a202c;
+    font-weight: 600;
+    margin-right: 4px;
+  }
+
+  .pedido-card h3 {
+    margin: 0;
+    font-size: 18px;
+    font-weight: 600;
+    color: #1a202c;
+  }
+
+  .estado {
+    padding: 6px 14px;
+    border-radius: 20px;
+    font-size: 12px;
+    font-weight: 600;
+    text-transform: capitalize;
+  }
+
+  .estado-pendiente {
+    background: #fef3c7;
+    color: #92400e;
+    border: 1px solid #fde68a;
+  }
+
+  .estado-procesando {
+    background: #e0e7ff;
+    color: #3730a3;
+    border: 1px solid #c7d2fe;
+  }
+
+  .estado-enviado {
+    background: #dbeafe;
+    color: #1e40af;
+    border: 1px solid #bfdbfe;
+  }
+
+  .estado-entregado {
+    background: #d1fae5;
+    color: #065f46;
+    border: 1px solid #a7f3d0;
+  }
+
+  .estado-cancelado {
+    background: #fee2e2;
+    color: #991b1b;
+    border: 1px solid #fecaca;
+  }
+
+  .pedido-actions select {
+    width: 100%;
+    padding: 10px 14px;
+    border: 1px solid #e2e8f0;
+    border-radius: 8px;
+    font-size: 14px;
+    color: #1a202c;
+    background: white;
+    cursor: pointer;
+    transition: all 0.2s;
+  }
+
+  .pedido-actions select:focus {
+    outline: none;
+    border-color: #4299e1;
+    box-shadow: 0 0 0 3px rgba(66, 153, 225, 0.1);
   }
 
   .pedido-items {

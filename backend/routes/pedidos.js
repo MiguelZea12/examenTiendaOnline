@@ -63,6 +63,7 @@ router.post('/', verifyToken, async (req, res) => {
 router.get('/vendedor', verifyToken, async (req, res) => {
   try {
     const userId = req.user.uid;
+    console.log('Buscando pedidos para vendedor:', userId);
     const snapshot = await db.collection('pedidos')
       .where('vendedorId', '==', userId)
       .get();
@@ -72,6 +73,7 @@ router.get('/vendedor', verifyToken, async (req, res) => {
       pedidos.push({ id: doc.id, ...doc.data() });
     });
 
+    console.log(`Encontrados ${pedidos.length} pedidos para vendedor ${userId}`);
     res.json(pedidos);
   } catch (error) {
     console.error('Error obteniendo pedidos:', error);
