@@ -65,7 +65,6 @@ router.get('/vendedor', verifyToken, async (req, res) => {
     const userId = req.user.uid;
     const snapshot = await db.collection('pedidos')
       .where('vendedorId', '==', userId)
-      .orderBy('fechaPedido', 'desc')
       .get();
     
     const pedidos = [];
@@ -86,7 +85,6 @@ router.get('/cliente', verifyToken, async (req, res) => {
     const userId = req.user.uid;
     const snapshot = await db.collection('pedidos')
       .where('clienteId', '==', userId)
-      .orderBy('fechaPedido', 'desc')
       .get();
     
     const pedidos = [];

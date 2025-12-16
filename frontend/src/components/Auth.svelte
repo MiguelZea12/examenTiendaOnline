@@ -140,93 +140,114 @@
     display: flex;
     align-items: center;
     justify-content: center;
-    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
     padding: 20px;
   }
 
   .auth-card {
     background: white;
-    padding: 40px;
-    border-radius: 10px;
-    box-shadow: 0 10px 40px rgba(0, 0, 0, 0.1);
+    padding: 48px;
+    border-radius: 16px;
+    box-shadow: 0 4px 24px rgba(0, 0, 0, 0.06);
     width: 100%;
-    max-width: 400px;
+    max-width: 420px;
+    border: 1px solid rgba(0, 0, 0, 0.04);
   }
 
   h1 {
-    margin: 0 0 30px;
-    color: #333;
+    margin: 0 0 32px;
+    color: #1a202c;
     text-align: center;
+    font-size: 28px;
+    font-weight: 600;
+    letter-spacing: -0.5px;
   }
 
   .form-group {
-    margin-bottom: 20px;
+    margin-bottom: 24px;
   }
 
   label {
     display: block;
-    margin-bottom: 5px;
-    color: #555;
+    margin-bottom: 8px;
+    color: #4a5568;
     font-weight: 500;
+    font-size: 14px;
+    letter-spacing: 0.2px;
   }
 
   input, select {
     width: 100%;
-    padding: 12px;
-    border: 1px solid #ddd;
-    border-radius: 5px;
-    font-size: 14px;
+    padding: 12px 16px;
+    border: 1px solid #e2e8f0;
+    border-radius: 8px;
+    font-size: 15px;
     box-sizing: border-box;
+    transition: all 0.2s ease;
+    background: #fafbfc;
   }
 
   input:focus, select:focus {
     outline: none;
-    border-color: #667eea;
+    border-color: #4299e1;
+    background: white;
+    box-shadow: 0 0 0 3px rgba(66, 153, 225, 0.1);
   }
 
   button[type="submit"] {
     width: 100%;
-    padding: 12px;
-    background: #667eea;
+    padding: 14px;
+    background: #4299e1;
     color: white;
     border: none;
-    border-radius: 5px;
-    font-size: 16px;
+    border-radius: 8px;
+    font-size: 15px;
     font-weight: 600;
     cursor: pointer;
-    transition: background 0.3s;
+    transition: all 0.2s ease;
+    letter-spacing: 0.3px;
   }
 
   button[type="submit"]:hover:not(:disabled) {
-    background: #5568d3;
+    background: #3182ce;
+    transform: translateY(-1px);
+    box-shadow: 0 4px 12px rgba(66, 153, 225, 0.3);
   }
 
   button[type="submit"]:disabled {
-    opacity: 0.6;
+    opacity: 0.5;
     cursor: not-allowed;
+    transform: none;
   }
 
   .error {
-    background: #fee;
-    color: #c33;
-    padding: 10px;
-    border-radius: 5px;
-    margin-bottom: 15px;
+    background: #fff5f5;
+    color: #c53030;
+    padding: 12px 16px;
+    border-radius: 8px;
+    margin-bottom: 20px;
     font-size: 14px;
+    border-left: 3px solid #fc8181;
   }
 
   .toggle {
     text-align: center;
-    margin-top: 20px;
-    color: #666;
+    margin-top: 24px;
+    color: #718096;
+    font-size: 14px;
   }
 
   .toggle button {
     background: none;
     border: none;
-    color: #667eea;
+    color: #4299e1;
     cursor: pointer;
     font-weight: 600;
-    text-decoration: underline;
+    transition: color 0.2s;
+    margin-left: 4px;
+  }
+
+  .toggle button:hover {
+    color: #3182ce;
   }
 </style>

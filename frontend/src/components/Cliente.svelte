@@ -49,7 +49,9 @@
 
   async function loadMisPedidos() {
     try {
-      misPedidos = await api.getPedidosCliente();
+      const pedidos = await api.getPedidosCliente();
+      // Ordenar por fecha en el cliente
+      misPedidos = pedidos.sort((a, b) => new Date(b.fechaPedido) - new Date(a.fechaPedido));
     } catch (error) {
       alert('Error al cargar pedidos: ' + error.message);
     }
@@ -107,10 +109,23 @@
 
 <div class="cliente-panel">
   <header>
-    <h1>🛍️ Tienda Online</h1>
+    <h1>Tienda Online</h1>
     <div class="user-info">
-      <span>👤 {user?.nombre || 'Cliente'}</span>
-      <button on:click={handleLogout} class="btn-logout">Cerrar Sesión</button>
+      <span>
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2" />
+          <circle cx="12" cy="7" r="4" />
+        </svg>
+        {user?.nombre || 'Cliente'}
+      </span>
+      <button on:click={handleLogout} class="btn-logout">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4" />
+          <polyline points="16 17 21 12 16 7" />
+          <line x1="21" y1="12" x2="9" y2="12" />
+        </svg>
+        Salir
+      </button>
     </div>
   </header>
 
@@ -119,13 +134,23 @@
       class:active={activeTab === 'tienda'} 
       on:click={() => activeTab = 'tienda'}
     >
-      🛒 Tienda
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+        <circle cx="9" cy="21" r="1" />
+        <circle cx="20" cy="21" r="1" />
+        <path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6" />
+      </svg>
+      Tienda
     </button>
     <button 
       class:active={activeTab === 'pedidos'} 
       on:click={() => activeTab = 'pedidos'}
     >
-      📦 Mis Pedidos
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+        <path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z" />
+        <polyline points="3.27 6.96 12 12.01 20.73 6.96" />
+        <line x1="12" y1="22.08" x2="12" y2="12" />
+      </svg>
+      Mis Pedidos
     </button>
   </div>
 
@@ -138,7 +163,7 @@
             {#if articulo.imagen}
               <img src={articulo.imagen} alt={articulo.nombre} />
             {:else}
-              <div class="no-image">📦</div>
+              <div class="no-image">Sin imagen</div>
             {/if}
             <div class="articulo-info">
               <h3>{articulo.nombre}</h3>
@@ -153,7 +178,12 @@
                 class="btn-comprar"
                 disabled={articulo.stock === 0}
               >
-                {articulo.stock === 0 ? 'Agotado' : '🛒 Comprar'}
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                  <circle cx="9" cy="21" r="1" />
+                  <circle cx="20" cy="21" r="1" />
+                  <path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6" />
+                </svg>
+                {articulo.stock === 0 ? 'Agotado' : 'Comprar'}
               </button>
             </div>
           </div>
@@ -277,14 +307,13 @@
 <style>
   .cliente-panel {
     min-height: 100vh;
-    background: #f5f5f5;
+    background: #f8f9fa;
   }
 
   header {
-    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-    color: white;
+    background: white;
+    border-bottom: 1px solid #e9ecef;
     padding: 20px 40px;
-    box-shadow: 0 2px 8px rgba(0,0,0,0.2);
     display: flex;
     justify-content: space-between;
     align-items: center;
@@ -292,26 +321,45 @@
 
   h1 {
     margin: 0;
+    color: #1a202c;
+    font-size: 20px;
+    font-weight: 600;
+    letter-spacing: -0.3px;
   }
 
   .user-info {
     display: flex;
-    gap: 15px;
+    gap: 16px;
     align-items: center;
+  }
+
+  .user-info span {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    color: #4a5568;
+    font-size: 14px;
+    font-weight: 500;
   }
 
   .btn-logout {
     padding: 8px 16px;
-    background: rgba(255,255,255,0.2);
-    color: white;
-    border: 1px solid white;
-    border-radius: 5px;
+    background: #f8f9fa;
+    color: #718096;
+    border: 1px solid #e9ecef;
+    border-radius: 8px;
     cursor: pointer;
-    transition: background 0.3s;
+    font-size: 14px;
+    font-weight: 500;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    transition: all 0.2s;
   }
 
   .btn-logout:hover {
-    background: rgba(255,255,255,0.3);
+    background: #e9ecef;
+    color: #4a5568;
   }
 
   .tabs {
@@ -323,19 +371,29 @@
   }
 
   .tabs button {
-    padding: 15px 25px;
-    background: none;
+    padding: 16px 24px;
     border: none;
-    border-bottom: 3px solid transparent;
+    background: none;
+    border-bottom: 2px solid transparent;
     cursor: pointer;
-    font-size: 16px;
-    color: #666;
-    transition: all 0.3s;
+    color: #718096;
+    font-size: 14px;
+    font-weight: 500;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    transition: all 0.2s;
+  }
+
+  .tabs button:hover {
+    color: #4a5568;
+    background: #f8f9fa;
   }
 
   .tabs button.active {
-    color: #667eea;
-    border-bottom-color: #667eea;
+    border-bottom-color: #4299e1;
+    color: #4299e1;
+    font-weight: 600;
   }
 
   .section {
@@ -425,23 +483,30 @@
 
   .btn-comprar {
     width: 100%;
-    padding: 12px;
-    background: #667eea;
+    padding: 12px 16px;
+    background: #4299e1;
     color: white;
     border: none;
-    border-radius: 5px;
-    font-size: 16px;
-    font-weight: 600;
+    border-radius: 8px;
     cursor: pointer;
-    transition: background 0.3s;
+    font-weight: 600;
+    font-size: 14px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 6px;
+    transition: all 0.2s;
   }
 
   .btn-comprar:hover:not(:disabled) {
-    background: #5568d3;
+    background: #3182ce;
+    transform: translateY(-1px);
+    box-shadow: 0 4px 12px rgba(66, 153, 225, 0.3);
   }
 
   .btn-comprar:disabled {
-    background: #ccc;
+    background: #e9ecef;
+    color: #a0aec0;
     cursor: not-allowed;
   }
 

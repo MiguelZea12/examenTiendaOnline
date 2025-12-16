@@ -49,7 +49,9 @@
 
   async function loadPedidos() {
     try {
-      pedidos = await api.getPedidosVendedor();
+      const pedidosData = await api.getPedidosVendedor();
+      // Ordenar por fecha en el cliente
+      pedidos = pedidosData.sort((a, b) => new Date(b.fechaPedido) - new Date(a.fechaPedido));
     } catch (error) {
       alert('Error al cargar pedidos: ' + error.message);
     }
@@ -119,10 +121,23 @@
 
 <div class="vendedor-panel">
   <header>
-    <h1>Panel de Vendedor</h1>
-    <div class="user-info">
-      <span>👤 {user?.nombre || 'Vendedor'}</span>
-      <button on:click={handleLogout} class="btn-logout">Cerrar Sesión</button>
+    <div class="header-content">
+      <h1>Panel de Vendedor</h1>
+      <div class="user-info">
+        <svg class="icon-user" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
+          <circle cx="12" cy="7" r="4"></circle>
+        </svg>
+        <span>{user?.nombre || 'Vendedor'}</span>
+        <button on:click={handleLogout} class="btn-logout">
+          <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"></path>
+            <polyline points="16 17 21 12 16 7"></polyline>
+            <line x1="21" y1="12" x2="9" y2="12"></line>
+          </svg>
+          Salir
+        </button>
+      </div>
     </div>
   </header>
 
@@ -131,13 +146,21 @@
       class:active={activeTab === 'articulos'} 
       on:click={() => activeTab = 'articulos'}
     >
-      📦 Mis Artículos
+      <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+        <path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"></path>
+      </svg>
+      Mis Artículos
     </button>
     <button 
       class:active={activeTab === 'pedidos'} 
       on:click={() => activeTab = 'pedidos'}
     >
-      🛒 Pedidos Recibidos
+      <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+        <circle cx="9" cy="21" r="1"></circle>
+        <circle cx="20" cy="21" r="1"></circle>
+        <path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"></path>
+      </svg>
+      Pedidos Recibidos
     </button>
   </div>
 
@@ -145,7 +168,13 @@
     <div class="section">
       <div class="section-header">
         <h2>Mis Artículos</h2>
-        <button on:click={() => openForm()} class="btn-primary">+ Nuevo Artículo</button>
+        <button on:click={() => openForm()} class="btn-primary">
+          <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <line x1="12" y1="5" x2="12" y2="19"></line>
+            <line x1="5" y1="12" x2="19" y2="12"></line>
+          </svg>
+          Nuevo Artículo
+        </button>
       </div>
 
       <div class="articulos-grid">
@@ -162,8 +191,20 @@
               <p class="precio">${articulo.precio}</p>
               <p class="stock">Stock: {articulo.stock}</p>
               <div class="actions">
-                <button on:click={() => openForm(articulo)} class="btn-edit">Editar</button>
-                <button on:click={() => deleteArticulo(articulo.id)} class="btn-delete">Eliminar</button>
+                <button on:click={() => openForm(articulo)} class="btn-edit">
+                  <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"></path>
+                    <path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"></path>
+                  </svg>
+                  Editar
+                </button>
+                <button on:click={() => deleteArticulo(articulo.id)} class="btn-delete">
+                  <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <polyline points="3 6 5 6 21 6"></polyline>
+                    <path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path>
+                  </svg>
+                  Eliminar
+                </button>
               </div>
             </div>
           </div>
@@ -260,13 +301,18 @@
 <style>
   .vendedor-panel {
     min-height: 100vh;
-    background: #f5f5f5;
+    background: #f8f9fa;
   }
 
   header {
     background: white;
-    padding: 20px 40px;
-    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    border-bottom: 1px solid #e9ecef;
+  }
+
+  .header-content {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 24px 40px;
     display: flex;
     justify-content: space-between;
     align-items: center;
@@ -274,49 +320,92 @@
 
   h1 {
     margin: 0;
-    color: #333;
+    color: #1a202c;
+    font-size: 24px;
+    font-weight: 600;
+    letter-spacing: -0.5px;
   }
 
   .user-info {
     display: flex;
-    gap: 15px;
+    gap: 16px;
     align-items: center;
+    color: #4a5568;
+    font-size: 14px;
+    font-weight: 500;
+  }
+
+  .icon-user {
+    width: 20px;
+    height: 20px;
+    color: #718096;
+  }
+
+  .icon {
+    width: 18px;
+    height: 18px;
   }
 
   .btn-logout {
     padding: 8px 16px;
-    background: #dc3545;
-    color: white;
-    border: none;
-    border-radius: 5px;
+    background: #f7fafc;
+    color: #718096;
+    border: 1px solid #e2e8f0;
+    border-radius: 8px;
     cursor: pointer;
+    font-size: 14px;
+    font-weight: 500;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    transition: all 0.2s;
+  }
+
+  .btn-logout:hover {
+    background: #edf2f7;
+    color: #4a5568;
+    border-color: #cbd5e0;
+  }
+
+  .tabs {
+    background: white;
+    border-bottom: 1px solid #e9ecef;
   }
 
   .tabs {
     display: flex;
-    background: white;
+    max-width: 1200px;
+    margin: 0 auto;
     padding: 0 40px;
-    gap: 10px;
-    border-bottom: 1px solid #ddd;
+    gap: 8px;
   }
 
   .tabs button {
-    padding: 15px 25px;
+    padding: 14px 20px;
     background: none;
     border: none;
-    border-bottom: 3px solid transparent;
+    border-bottom: 2px solid transparent;
     cursor: pointer;
-    font-size: 16px;
-    color: #666;
+    font-size: 14px;
+    font-weight: 500;
+    color: #718096;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    transition: all 0.2s;
+  }
+
+  .tabs button:hover {
+    color: #4a5568;
   }
 
   .tabs button.active {
-    color: #667eea;
-    border-bottom-color: #667eea;
+    color: #4299e1;
+    border-bottom-color: #4299e1;
   }
 
   .section {
-    padding: 40px;
+    padding: 32px 40px;
     max-width: 1200px;
     margin: 0 auto;
   }
@@ -325,170 +414,291 @@
     display: flex;
     justify-content: space-between;
     align-items: center;
-    margin-bottom: 30px;
+    margin-bottom: 24px;
   }
 
   h2 {
-    margin: 0 0 20px;
-    color: #333;
+    margin: 0;
+    color: #1a202c;
+    font-size: 20px;
+    font-weight: 600;
+    letter-spacing: -0.3px;
   }
 
   .btn-primary {
     padding: 10px 20px;
-    background: #667eea;
+    background: #4299e1;
     color: white;
     border: none;
-    border-radius: 5px;
+    border-radius: 8px;
     cursor: pointer;
-    font-weight: 600;
+    font-weight: 500;
+    font-size: 14px;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    transition: all 0.2s;
+  }
+
+  .btn-primary:hover {
+    background: #3182ce;
+    transform: translateY(-1px);
+    box-shadow: 0 4px 12px rgba(66, 153, 225, 0.3);
   }
 
   .btn-secondary {
     padding: 10px 20px;
-    background: #6c757d;
+    background: #718096;
     color: white;
     border: none;
-    border-radius: 5px;
+    border-radius: 8px;
     cursor: pointer;
+    font-weight: 500;
+    font-size: 14px;
+    transition: all 0.2s;
+  }
+
+  .btn-secondary:hover {
+    background: #4a5568;
   }
 
   .articulos-grid {
     display: grid;
     grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
-    gap: 20px;
+    gap: 24px;
   }
 
   .articulo-card {
     background: white;
-    border-radius: 10px;
+    border-radius: 12px;
     overflow: hidden;
-    box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+    border: 1px solid #e9ecef;
+    transition: all 0.2s;
+  }
+
+  .articulo-card:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.08);
   }
 
   .articulo-card img, .no-image {
     width: 100%;
     height: 200px;
     object-fit: cover;
-    background: #eee;
+    background: linear-gradient(135deg, #f5f7fa 0%, #e2e8f0 100%);
     display: flex;
     align-items: center;
     justify-content: center;
-    color: #999;
+    color: #a0aec0;
+    font-size: 14px;
+    font-weight: 500;
   }
 
   .articulo-info {
-    padding: 15px;
+    padding: 20px;
   }
 
   .articulo-info h3 {
-    margin: 0 0 10px;
-    font-size: 18px;
+    margin: 0 0 8px;
+    font-size: 16px;
+    font-weight: 600;
+    color: #1a202c;
   }
 
   .descripcion {
-    color: #666;
+    color: #718096;
     font-size: 14px;
-    margin: 0 0 10px;
+    line-height: 1.5;
+    margin: 0 0 16px;
   }
 
   .precio {
     font-size: 24px;
-    font-weight: bold;
-    color: #667eea;
-    margin: 10px 0;
+    font-weight: 700;
+    color: #4299e1;
+    margin: 12px 0;
+    letter-spacing: -0.5px;
   }
 
   .stock {
-    color: #666;
-    font-size: 14px;
+    color: #718096;
+    font-size: 13px;
+    font-weight: 500;
   }
 
   .actions {
     display: flex;
-    gap: 10px;
-    margin-top: 15px;
+    gap: 8px;
+    margin-top: 16px;
   }
 
   .btn-edit, .btn-delete {
     flex: 1;
-    padding: 8px;
+    padding: 10px;
     border: none;
-    border-radius: 5px;
+    border-radius: 8px;
     cursor: pointer;
-    font-size: 14px;
+    font-size: 13px;
+    font-weight: 500;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 6px;
+    transition: all 0.2s;
   }
 
   .btn-edit {
-    background: #ffc107;
-    color: #333;
+    background: #fef3c7;
+    color: #92400e;
+    border: 1px solid #fde68a;
+  }
+
+  .btn-edit:hover {
+    background: #fde68a;
   }
 
   .btn-delete {
-    background: #dc3545;
-    color: white;
+    background: #fee2e2;
+    color: #991b1b;
+    border: 1px solid #fecaca;
   }
 
-  .pedidos-list {
+  .btn-delete:hover {
+    background: #fecaca;
+  }
+
+    .pedidos-list {
     display: flex;
     flex-direction: column;
-    gap: 20px;
+    gap: 16px;
   }
 
   .pedido-card {
     background: white;
-    padding: 20px;
-    border-radius: 10px;
-    box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+    border-radius: 12px;
+    padding: 24px;
+    border: 1px solid #e9ecef;
+    transition: all 0.2s;
+  }
+
+  .pedido-card:hover {
+    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.06);
   }
 
   .pedido-header {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    margin-bottom: 15px;
-    border-bottom: 1px solid #eee;
-    padding-bottom: 10px;
+    margin-bottom: 16px;
+    padding-bottom: 16px;
+    border-bottom: 1px solid #f1f3f5;
   }
 
-  .pedido-header h3 {
-    margin: 0;
+  .pedido-id {
+    font-size: 12px;
+    color: #718096;
+    font-weight: 500;
+    font-family: monospace;
   }
 
-  .estado {
-    padding: 5px 15px;
+  .estado-badge {
+    padding: 6px 14px;
     border-radius: 20px;
     font-size: 12px;
     font-weight: 600;
-    text-transform: uppercase;
+    letter-spacing: 0.3px;
   }
 
-  .estado-pendiente { background: #ffc107; color: #333; }
-  .estado-procesando { background: #17a2b8; color: white; }
-  .estado-enviado { background: #007bff; color: white; }
-  .estado-entregado { background: #28a745; color: white; }
-  .estado-cancelado { background: #dc3545; color: white; }
-
-  .pedido-details p {
-    margin: 5px 0;
-    color: #666;
+  .estado-badge.pendiente {
+    background: #fef3c7;
+    color: #92400e;
+    border: 1px solid #fde68a;
   }
 
-  .pedido-actions {
-    margin-top: 15px;
+  .estado-badge.enviado {
+    background: #dbeafe;
+    color: #1e40af;
+    border: 1px solid #bfdbfe;
   }
 
-  .pedido-actions select {
-    width: 100%;
-    padding: 10px;
-    border: 1px solid #ddd;
-    border-radius: 5px;
+  .estado-badge.entregado {
+    background: #d1fae5;
+    color: #065f46;
+    border: 1px solid #a7f3d0;
+  }
+
+  .pedido-items {
+    margin: 16px 0;
+  }
+
+  .pedido-item {
+    display: flex;
+    justify-content: space-between;
+    padding: 10px 0;
+    border-bottom: 1px solid #f1f3f5;
     font-size: 14px;
   }
 
-  .empty {
-    text-align: center;
-    color: #999;
-    padding: 40px;
+  .pedido-item:last-child {
+    border-bottom: none;
+  }
+
+  .pedido-total {
+    margin-top: 16px;
+    padding-top: 16px;
+    border-top: 2px solid #4299e1;
+    font-size: 20px;
+    font-weight: 700;
+    text-align: right;
+    color: #4299e1;
+    letter-spacing: -0.5px;
+  }
+
+  .pedido-actions {
+    display: flex;
+    gap: 8px;
+    margin-top: 16px;
+  }
+
+  .btn-estado {
+    flex: 1;
+    padding: 10px 16px;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    font-size: 13px;
+    font-weight: 600;
+    transition: all 0.2s;
+  }
+
+  .btn-estado.pendiente {
+    background: #fef3c7;
+    color: #92400e;
+    border: 1px solid #fde68a;
+  }
+
+  .btn-estado.pendiente:hover {
+    background: #fde68a;
+  }
+
+  .btn-estado.enviado {
+    background: #dbeafe;
+    color: #1e40af;
+    border: 1px solid #bfdbfe;
+  }
+
+  .btn-estado.enviado:hover {
+    background: #bfdbfe;
+  }
+
+  .btn-estado.entregado {
+    background: #d1fae5;
+    color: #065f46;
+    border: 1px solid #a7f3d0;
+  }
+
+  .btn-estado.entregado:hover {
+    background: #a7f3d0;
   }
 
   .modal {
@@ -497,21 +707,41 @@
     left: 0;
     right: 0;
     bottom: 0;
-    background: rgba(0,0,0,0.5);
+    background: rgba(0, 0, 0, 0.4);
+    backdrop-filter: blur(4px);
     display: flex;
     align-items: center;
     justify-content: center;
     z-index: 1000;
+    animation: fadeIn 0.2s ease-out;
+  }
+
+  @keyframes fadeIn {
+    from { opacity: 0; }
+    to { opacity: 1; }
+  }
+
+  @keyframes slideUp {
+    from {
+      opacity: 0;
+      transform: translateY(20px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
   }
 
   .modal-content {
     background: white;
-    padding: 30px;
-    border-radius: 10px;
+    padding: 32px;
+    border-radius: 16px;
     width: 90%;
-    max-width: 500px;
+    max-width: 520px;
     max-height: 90vh;
     overflow-y: auto;
+    box-shadow: 0 20px 60px rgba(0, 0, 0, 0.15);
+    animation: slideUp 0.3s ease-out;
   }
 
   .form-group {
@@ -520,35 +750,51 @@
 
   .form-group label {
     display: block;
-    margin-bottom: 5px;
-    color: #555;
-    font-weight: 500;
+    margin-bottom: 8px;
+    color: #1a202c;
+    font-weight: 600;
+    font-size: 14px;
   }
 
   .form-group input, .form-group textarea {
     width: 100%;
-    padding: 10px;
-    border: 1px solid #ddd;
-    border-radius: 5px;
+    padding: 12px 14px;
+    border: 1px solid #e9ecef;
+    border-radius: 8px;
     font-size: 14px;
+    color: #1a202c;
+    background: #f8f9fa;
+    transition: all 0.2s;
+    font-family: inherit;
     box-sizing: border-box;
+  }
+
+  .form-group input:focus,
+  .form-group textarea:focus {
+    outline: none;
+    border-color: #4299e1;
+    background: white;
+    box-shadow: 0 0 0 3px rgba(66, 153, 225, 0.1);
   }
 
   .form-group textarea {
     resize: vertical;
-    min-height: 80px;
+    min-height: 100px;
+    line-height: 1.5;
   }
 
   .form-row {
     display: grid;
     grid-template-columns: 1fr 1fr;
-    gap: 15px;
+    gap: 16px;
   }
 
   .form-actions {
     display: flex;
     gap: 10px;
     justify-content: flex-end;
-    margin-top: 20px;
+    margin-top: 24px;
+    padding-top: 20px;
+    border-top: 1px solid #e9ecef;
   }
 </style>
