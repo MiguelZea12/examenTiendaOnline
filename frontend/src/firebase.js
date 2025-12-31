@@ -3,17 +3,18 @@ import { getAuth } from 'firebase/auth';
 
 const firebaseConfig = {
 
-  apiKey: "AIzaSyCV3A430ASHwpo1lxkb6mAR31S4FVlrLXw",
+  apiKey: "AIzaSyAkCwoe8nGhMXHkfeq-xUMwWJUujfhN6Wc",
 
-  authDomain: "tienda-online-b1d83.firebaseapp.com",
+  authDomain: "tienda-online-5cc0d.firebaseapp.com",
 
-  projectId: "tienda-online-b1d83",
+  projectId: "tienda-online-5cc0d",
 
-  storageBucket: "tienda-online-b1d83.firebasestorage.app",
+  storageBucket: "tienda-online-5cc0d.firebasestorage.app",
 
-  messagingSenderId: "971516398792",
+  messagingSenderId: "489929892366",
 
-  appId: "1:971516398792:web:1a7bd0a5029d26e2a069fd",
+  appId: "1:489929892366:web:12890b5fac515c22c2525f",
+
 
   measurementId: "G-Q0CWKTVXKJ"
 
